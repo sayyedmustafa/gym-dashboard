@@ -43,13 +43,14 @@ st.markdown("""
 @st.cache_data(ttl=300)  # Refresh every 5 minutes
 def load_data():
     SHEET_ID = "1UNM6EI7Al5xOMm-opaWRJ6mIZf1bTRCyX1h49KzEZgM"
-    SHEET_NAME = "Gym Members"
-    url = f"https://docs.google.com/spreadsheets/d/1UNM6EI7Al5xOMm-opaWRJ6mIZf1bTRCyX1h49KzEZgM/gviz/tq?tqx=out:csv&sheet=Sheet1"
+    SHEET_NAME = "Sheet1"
+    url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}"
     df = pd.read_csv(url)
-    df.columns = df.columns.str.strip()
+    df.columns = df.columns.str.strip().str.lower()
     df['start_date'] = pd.to_datetime(df['start_date'])
     df['end_date'] = pd.to_datetime(df['end_date'])
-    df['days_remaining'] = (df['end_date'] - datetime.now()).dt.days
+    today = pd.Timestamp.now().normalize()
+    df['days_remaining'] = (df['end_date'] - today).dt.days
     return df
 
 # --- WhatsApp Message Generator ---
@@ -73,7 +74,7 @@ today = datetime.now()
 
 # --- Header ---
 st.markdown("## 💪 Gym Member Dashboard")
-gym_name = st.sidebar.text_input("Gym Name", value="FitZone Gym")
+gym_name = st.sidebar.text_input("Gym Name", value="GymCity")
 st.markdown(f"### {gym_name}")
 st.markdown(f"*Last updated: {today.strftime('%d %b %Y, %I:%M %p')}*")
 st.divider()
@@ -96,15 +97,24 @@ filtered_df = df[df['plan'].isin(plan_filter)]
 total_members = len(filtered_df)
 active_members = len(filtered_df[filtered_df['days_remaining'] >= 0])
 expiring_7days = len(filtered_df[(filtered_df['days_remaining'] >= 0) & (filtered_df['days_remaining'] <= 7)])
-expiring_30days = len(filtered_df[(filtered_df['days_remaining'] >= 0) & (filtered_df['days_remaining'] <= 30)])
 expired_members = len(filtered_df[filtered_df['days_remaining'] < 0])
+
+plan_prices = {
+    "1 Month": 1500,
+    "3 Months": 4000,
+    "6 Months": 7000
+}
+
+filtered_df['revenue'] = filtered_df['plan'].map(plan_prices)
+
+estimated_revenue = filtered_df['revenue'].sum()
 
 col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("Total Members", total_members)
 col2.metric("Active Members", active_members, delta=None)
 col3.metric("Expiring in 7 Days", expiring_7days, delta=f"-{expiring_7days} this week" if expiring_7days > 0 else None, delta_color="inverse")
-col4.metric("Expiring in 30 Days", expiring_30days)
-col5.metric("Expired (Lapsed)", expired_members, delta=f"{expired_members} need followup" if expired_members > 0 else None, delta_color="inverse")
+col4.metric("Expired (Lapsed)", expired_members, delta=f"{expired_members} need followup" if expired_members > 0 else None, delta_color="inverse")
+col5.metric("Estimated Revenue", f"₹{estimated_revenue:,}")
 
 st.divider()
 
@@ -128,10 +138,9 @@ if show_section == "Overview":
     with col_right:
         # Member status breakdown
         status_data = {
-            'Status': ['Active (30+ days)', 'Expiring Soon (≤30 days)', 'Expiring This Week (≤7 days)', 'Expired'],
+            'Status': ['Active Members', 'Expiring This Week', 'Expired Members'],
             'Count': [
-                len(filtered_df[filtered_df['days_remaining'] > 30]),
-                len(filtered_df[(filtered_df['days_remaining'] > 7) & (filtered_df['days_remaining'] <= 30)]),
+                len(filtered_df[filtered_df['days_remaining'] > 7]),
                 expiring_7days,
                 expired_members
             ]
@@ -194,22 +203,6 @@ elif show_section == "Expiring Members":
             col4.markdown(f"[📲 Send WhatsApp]({wa_link})")
             st.divider()
 
-    # --- Soon ---
-    st.markdown(f"### 🟡 Expiring in 8–30 Days ({len(soon)} members)")
-    if len(soon) == 0:
-        st.info("No members expiring in next 30 days.")
-    else:
-        for _, row in soon.iterrows():
-            wa_link = generate_whatsapp_link(
-                row['phone'], row['name'],
-                row['days_remaining'], row['end_date']
-            )
-            col1, col2, col3, col4 = st.columns([3, 2, 2, 2])
-            col1.markdown(f"**{row['name']}**")
-            col2.markdown(f"📱 {row['phone']}")
-            col3.markdown(f"📅 Expires {row['end_date'].strftime('%d %b')}")
-            col4.markdown(f"[📲 Send WhatsApp]({wa_link})")
-            st.divider()
 
     # --- Expired ---
     st.markdown(f"### ⚫ Lapsed Members ({len(expired)} members)")
