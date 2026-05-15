@@ -257,4 +257,4 @@ elif show_section == "All Members":
     st.dataframe(show_cols, use_container_width=True, hide_index=True)
 
 st.divider()
-st.caption("Built by [Your Name] · Auto-refreshes every 5 minutes · Data stored in Google Sheets")
+st.caption("Powered by Rexus Agency · Auto-refreshes every 5 minutes")
