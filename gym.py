@@ -44,7 +44,7 @@ st.markdown("""
 def load_data():
     SHEET_ID = "1UNM6EI7Al5xOMm-opaWRJ6mIZf1bTRCyX1h49KzEZgM"
     SHEET_NAME = "Gym Members"
-    url = f"https://docs.google.com/spreadsheets/d/{1UNM6EI7Al5xOMm-opaWRJ6mIZf1bTRCyX1h49KzEZgM}/gviz/tq?tqx=out:csv&sheet={Sheet1}"
+    url = f"https://docs.google.com/spreadsheets/d/1UNM6EI7Al5xOMm-opaWRJ6mIZf1bTRCyX1h49KzEZgM/gviz/tq?tqx=out:csv&sheet=Sheet1"
     df = pd.read_csv(url)
     df.columns = df.columns.str.strip()
     df['start_date'] = pd.to_datetime(df['start_date'])
