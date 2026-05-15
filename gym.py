@@ -40,17 +40,37 @@ st.markdown("""
         margin: 5px 0;
     }
 
-    #MainMenu {
-        visibility: hidden;
-    }
+#MainMenu {
+    display: none;
+}
 
-    footer {
-        visibility: hidden;
-    }
+header {
+    display: none;
+}
 
-    header {
-        visibility: hidden;
-    }
+footer {
+    display: none;
+}
+
+[data-testid="stToolbar"] {
+    display: none;
+}
+
+[data-testid="stDecoration"] {
+    display: none;
+}
+
+[data-testid="stStatusWidget"] {
+    display: none;
+}
+
+[data-testid="stDeployButton"] {
+    display: none;
+}
+
+.viewerBadge_container__1QSob {
+    display: none;
+}
 
 </style>
 """, unsafe_allow_html=True)
