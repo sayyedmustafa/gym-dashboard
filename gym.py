@@ -12,6 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # --- Custom CSS ---
 st.markdown("""
 <style>
@@ -22,6 +23,7 @@ st.markdown("""
         border: 1px solid #0f3460;
         text-align: center;
     }
+
     .expiry-urgent {
         background-color: #ff4b4b22;
         border-left: 4px solid #ff4b4b;
@@ -29,6 +31,7 @@ st.markdown("""
         border-radius: 4px;
         margin: 5px 0;
     }
+
     .expiry-soon {
         background-color: #ffa50022;
         border-left: 4px solid #ffa500;
@@ -36,6 +39,19 @@ st.markdown("""
         border-radius: 4px;
         margin: 5px 0;
     }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    header {
+        visibility: hidden;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
