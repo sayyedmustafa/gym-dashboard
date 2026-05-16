@@ -165,7 +165,7 @@ col1.metric("Total Members", total_members)
 col2.metric("Active Members", active_members, delta=None)
 col3.metric("Expiring in 7 Days", expiring_7days, delta=f"-{expiring_7days} this week" if expiring_7days > 0 else None, delta_color="inverse")
 col4.metric("Expired (Lapsed)", expired_members, delta=f"{expired_members} need followup" if expired_members > 0 else None, delta_color="inverse")
-col5.metric("Estimated Revenue", f"₹{estimated_revenue:,}")
+col5.metric("Membership Value", f"₹{estimated_revenue:,}")
 
 st.divider()
 
@@ -224,12 +224,6 @@ elif show_section == "Expiring Members":
     urgent = filtered_df[
         (filtered_df['days_remaining'] >= 0) & 
         (filtered_df['days_remaining'] <= 7)
-    ].sort_values('days_remaining')
-    
-    # Soon — expiring in 8-30 days
-    soon = filtered_df[
-        (filtered_df['days_remaining'] > 7) & 
-        (filtered_df['days_remaining'] <= 30)
     ].sort_values('days_remaining')
     
     # Expired
