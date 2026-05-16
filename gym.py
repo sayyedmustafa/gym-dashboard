@@ -16,6 +16,41 @@ st.set_page_config(
 # --- Custom CSS ---
 st.markdown("""
 <style>
+    /* Hide all Streamlit branding */
+    #MainMenu { visibility: hidden !important; display: none !important; }
+    header { visibility: hidden !important; display: none !important; }
+    footer { visibility: hidden !important; display: none !important; }
+
+    /* Hide toolbar and deploy button */
+    [data-testid="stToolbar"] { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    [data-testid="stStatusWidget"] { display: none !important; }
+    [data-testid="stDeployButton"] { display: none !important; }
+    [data-testid="stAppDeployButton"] { display: none !important; }
+
+    /* Hide GitHub and share badges — all known class variants */
+    .viewerBadge_container__1QSob { display: none !important; }
+    .viewerBadge_container__r5tak { display: none !important; }
+    .viewerBadge_link__qRIco { display: none !important; }
+    .stAppDeployButton { display: none !important; }
+    ._profileContainer_1yi6l_53 { display: none !important; }
+    ._profilePreview_1yi6l_88 { display: none !important; }
+
+    /* Nuclear option — hide anything linking to github or streamlit */
+    a[href*="github"] { display: none !important; }
+    a[href*="share.streamlit"] { display: none !important; }
+
+    /* Hide the floating bottom-right button (fork/share) */
+    .stActionButton { display: none !important; }
+    [data-testid="baseButton-header"] { display: none !important; }
+
+    /* Mobile improvements */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    /* Your existing card styles */
     .metric-card {
         background: linear-gradient(135deg, #1a1a2e, #16213e);
         padding: 20px;
@@ -23,7 +58,6 @@ st.markdown("""
         border: 1px solid #0f3460;
         text-align: center;
     }
-
     .expiry-urgent {
         background-color: #ff4b4b22;
         border-left: 4px solid #ff4b4b;
@@ -31,7 +65,6 @@ st.markdown("""
         border-radius: 4px;
         margin: 5px 0;
     }
-
     .expiry-soon {
         background-color: #ffa50022;
         border-left: 4px solid #ffa500;
@@ -39,54 +72,6 @@ st.markdown("""
         border-radius: 4px;
         margin: 5px 0;
     }
-
-#MainMenu {
-    display: none;
-}
-
-header {
-    display: none;
-}
-
-footer {
-    display: none;
-}
-
-[data-testid="stToolbar"] {
-    display: none;
-}
-
-[data-testid="stDecoration"] {
-    display: none;
-}
-
-[data-testid="stStatusWidget"] {
-    display: none;
-}
-
-[data-testid="stDeployButton"] {
-    display: none;
-}
-
-.viewerBadge_container__1QSob {
-    display: none;
-}
-
-button[kind="header"],
-.viewerBadge_container__r5tak,
-.viewerBadge_link__qRIco,
-.stAppDeployButton,
-[data-testid="stStatusWidget"],
-[data-testid="stToolbar"],
-[data-testid="stDecoration"],
-[data-testid="stAppViewContainer"] > div:nth-child(1) {
-    display: none !important;
-}
-
-a[href*="github"] {
-    display: none !important;
-}            
-
 </style>
 """, unsafe_allow_html=True)
 
