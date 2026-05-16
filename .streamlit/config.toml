@@ -1,6 +1,9 @@
 [client]
+toolbarMode = "viewer"
 showSidebarNavigation = false
-toolbarMode = "minimal"
 
 [browser]
 gatherUsageStats = false
+
+[theme]
+base = "dark"
