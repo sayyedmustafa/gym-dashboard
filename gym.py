@@ -72,6 +72,21 @@ footer {
     display: none;
 }
 
+button[kind="header"],
+.viewerBadge_container__r5tak,
+.viewerBadge_link__qRIco,
+.stAppDeployButton,
+[data-testid="stStatusWidget"],
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stAppViewContainer"] > div:nth-child(1) {
+    display: none !important;
+}
+
+a[href*="github"] {
+    display: none !important;
+}            
+
 </style>
 """, unsafe_allow_html=True)
 
